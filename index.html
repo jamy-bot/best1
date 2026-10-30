@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5f7fb">
+<meta name="description" content="Votre espace de travail MPI : programme personnalisable par jour, pomodoros à durées variables, conseils de pause et historique JSON local.">
+<title>MPI* — Votre rythme, vos progrès</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#17243c;--muted:#738096;--line:#e7ebf2;--primary:#5754d9;--primary-soft:#efeffd;--teal:#218b7d;--shadow:0 4px 24px -12px #24345220;--radius:20px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:98px}body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button,a,input,select{ -webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit;text-decoration:none}button{color:inherit}button:disabled{cursor:not-allowed;opacity:.5}button,input,select,textarea{outline-offset:4px} :focus-visible{outline:3px solid #9897ed}::selection{background:#deddfb}h1,h2,h3,p{margin:0}h1,h2,h3,.display{font-family:Manrope,sans-serif}h1{font-size:clamp(32px,4.5vw,51px);line-height:1.17;letter-spacing:-2px;font-weight:800}h2{font-size:27px;line-height:1.3;letter-spacing:-1px;font-weight:800}h3{font-size:17px;letter-spacing:-.4px}svg.icon{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}.mono{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}.muted{color:var(--muted)}.small{font-size:12px}.eyebrow{font-size:10px;font-weight:750;letter-spacing:1.8px;text-transform:uppercase}.container{max-width:1224px;padding:0 30px;margin:auto}.row{display:flex;align-items:center;gap:12px}.between{display:flex;align-items:center;justify-content:space-between;gap:16px}.wrap{flex-wrap:wrap}.pill{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:100px;font-size:11px;font-weight:600;white-space:nowrap;background:var(--primary-soft);color:var(--primary)}.dot{width:6px;height:6px;background:currentColor;border-radius:50%;flex-shrink:0}.btn{border:1px solid var(--line);background:white;border-radius:10px;padding:10px 15px;display:inline-flex;justify-content:center;align-items:center;gap:8px;font-size:12px;font-weight:650;transition:background .2s,transform .2s,box-shadow .2s;line-height:1.6}.btn:hover{background:#f8f9fc;border-color:#cbcce8;transform:translateY(-1px)}.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 10px #5754d91c}.btn.primary:hover{background:#4946c3}.btn.soft{background:var(--primary-soft);color:var(--primary);border-color:transparent}.btn.icon-only{padding:10px}.btn.danger{color:#b74b5e;background:#fff4f5;border-color:#f6dfe4}.btn.wide{width:100%}.text-btn{border:0;background:none;padding:0;font-size:12px;font-weight:650;color:var(--primary);display:inline-flex;gap:7px;align-items:center}.text-btn:hover{text-decoration:underline}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.section{padding-top:55px}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:22px}.section-head p{margin-top:7px;color:var(--muted);max-width:630px;font-size:13px}.section-head .eyebrow{color:var(--primary);margin-bottom:7px}.ico-box{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:var(--primary-soft);color:var(--primary);flex-shrink:0}
+header{position:sticky;top:0;z-index:40;background:#ffffffed;backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.header-inner{height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px}.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}.brand-logo{width:38px;height:38px;border-radius:12px;background:var(--primary);color:white;display:grid;place-items:center;font-family:Manrope,sans-serif;font-weight:800;font-size:17px;letter-spacing:-1px}.brand-name{font-family:Manrope,sans-serif;font-size:15px;font-weight:800;letter-spacing:-.5px}.brand-name span{color:var(--primary)}.brand-sub{font-size:9px;letter-spacing:1.4px;color:var(--muted);text-transform:uppercase}.nav{display:flex;gap:25px}.nav a{font-size:12px;font-weight:550;color:var(--muted);padding:27px 0;border-bottom:2px solid transparent}.nav a:hover,.nav a.active{color:var(--primary);border-bottom-color:var(--primary)}.header-actions{display:flex;gap:8px}.menu-button{display:none}
+.hero{padding-top:38px;display:grid;grid-template-columns:1.3fr .7fr;gap:50px;align-items:center}.hello{color:var(--muted);font-size:12px;margin-bottom:18px}.hello span{display:inline-block;width:5px;height:5px;background:#9dacca;border-radius:50%;margin:0 8px 2px}h1 em{font-style:normal;color:var(--primary)}.hero-text{max-width:540px;color:var(--muted);font-size:14px;line-height:1.9;margin-top:17px}.hero-actions{display:flex;gap:11px;margin-top:23px}.hero-actions .btn{padding:11px 18px}.hero-visual{padding:23px 25px 20px;background:linear-gradient(140deg,#edf0fd,#f0f6f4);border-radius:22px;position:relative;overflow:hidden;min-height:254px;border:1px solid #e2e7f3}.hero-visual:after{content:"";position:absolute;right:-55px;top:-90px;width:230px;height:230px;border:1px solid #d6dced;border-radius:50%;pointer-events:none}.visual-top{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:650;color:#687493;letter-spacing:1px;text-transform:uppercase}.hero-times{font-size:25px;font-weight:650;letter-spacing:-1px;margin-top:20px}.hero-times span{color:#9babc3;font-size:17px;margin:0 6px}.mini-blocks{display:flex;gap:5px;height:35px;margin-top:18px}.mini-block{border-radius:6px;min-width:5px;position:relative}.mini-block.pause{background:#d5e0e5!important}.visual-legend{display:flex;gap:14px;font-size:10px;color:#6c7890;margin-top:14px}.visual-legend span{display:flex;gap:5px;align-items:center}.visual-legend i{width:6px;height:6px;border-radius:2px;display:block}.visual-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #dce4ed;margin-top:18px;padding-top:13px;font-size:11px;color:#6b7690}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:29px}.stat{padding:18px 21px;display:flex;align-items:center;gap:15px}.stat .value{font-family:Manrope,sans-serif;font-size:25px;letter-spacing:-1px;font-weight:800;line-height:1.3}.stat .value span{font-family:"DM Sans";font-size:12px;font-weight:400;color:var(--muted);letter-spacing:0}.stat .label{font-size:11px;color:var(--muted);margin-top:3px}.stat .ico-box{width:40px;height:40px}.focus-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:20px}.timer-card{padding:25px 27px}.timer-top{display:flex;justify-content:space-between;align-items:center}.timer-top h3{font-size:15px}.timer-ring{width:238px;height:238px;margin:17px auto 18px;position:relative}.timer-ring>svg{width:100%;height:100%;transform:rotate(-90deg)}.timer-ring circle{fill:none;stroke-width:7}.timer-ring .track{stroke:#f0f1f8}.timer-ring .progress{stroke:var(--primary);stroke-linecap:round;stroke-dasharray:653.45;stroke-dashoffset:0;transition:stroke-dashoffset .3s linear}.timer-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}.timer-number{font-size:46px;line-height:1.2;letter-spacing:-2px;font-weight:500}.timer-mode{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);max-width:175px;text-align:center}.timer-presets{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}.preset{background:white;border:1px solid var(--line);border-radius:8px;padding:6px 11px;color:var(--muted);font-size:11px}.preset.active{color:var(--primary);background:var(--primary-soft);border-color:#d6d5f5}.timer-controls{display:grid;grid-template-columns:1fr 44px;gap:10px;margin-top:19px}.timer-controls .btn{font-size:13px;padding:12px}.timer-footer{text-align:center;margin-top:14px;color:var(--muted);font-size:11px}.side-stack{display:flex;flex-direction:column;gap:17px}.break-card{padding:23px 25px;background:#eff7f4;border-color:#dfeee7;flex:1}.break-card .eyebrow{color:var(--teal)}.break-card h3{font-size:20px;margin:15px 0 8px}.break-card p{color:#6a827a;font-size:13px;line-height:1.85;min-height:66px}.break-bottom{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:19px}.break-card .text-btn{color:var(--teal)}.break-card .ico-box{background:#dfefe8;color:var(--teal)}.sound-card{padding:20px 24px}.sound-card h3{font-size:14px}.sound-controls{display:grid;grid-template-columns:1fr 39px;gap:8px;margin-top:16px}.field,select{width:100%;border:1px solid #dfe5ed;border-radius:9px;background:white;padding:10px 12px;color:var(--ink);min-width:0}.field:focus,select:focus{border-color:#9897ed}.sound-controls select{font-size:12px;padding:8px}.sound-volume{display:flex;align-items:center;gap:12px;margin-top:14px}input[type=range]{accent-color:var(--primary);height:4px;width:100%;cursor:pointer}.check-label{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--muted);margin-top:14px}input[type=checkbox]{accent-color:var(--primary);width:15px;height:15px;cursor:pointer}
+.quota-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.quota-card{padding:21px}.quota-name{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:650}.subject-dot{height:8px;width:8px;border-radius:3px;background:var(--c);flex-shrink:0}.quota-count{font-family:Manrope,sans-serif;font-size:30px;font-weight:750;letter-spacing:-1px;margin:18px 0 11px}.quota-count span{font-size:14px;color:#a1acbc;font-weight:500;letter-spacing:0}.bar{height:5px;border-radius:5px;background:#eef0f6;overflow:hidden}.bar>div{height:100%;border-radius:5px;background:var(--c,var(--primary));transition:width .4s}.quota-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:15px;color:var(--muted);font-size:10px}.steps{display:flex;gap:5px}.step{width:28px;height:28px;border:1px solid var(--line);background:#fff;border-radius:7px;font-size:17px;display:grid;place-items:center;line-height:1}.step:hover{background:#f1f0fd;color:var(--primary)}.quota-target{border:0;background:none;padding:0;color:var(--muted);font-size:10px;text-decoration:underline;text-decoration-style:dotted;cursor:pointer}
+.program-layout{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start}.program-sidebar{padding:23px;position:sticky;top:98px}.program-sidebar h3{font-size:14px;margin-bottom:15px}.weekdays{display:grid;gap:5px}.day-btn{display:flex;align-items:center;justify-content:space-between;border:0;border-radius:9px;padding:10px 12px;background:white;color:var(--muted);font-size:12px;text-align:left}.day-btn.active{background:var(--primary-soft);color:var(--primary);font-weight:650}.day-btn:hover{background:#f6f6fd}.day-btn span{font-size:10px;opacity:.75}.sidebar-note{margin-top:19px;border-top:1px solid var(--line);padding-top:17px;font-size:11px;color:var(--muted);line-height:1.8}.sidebar-note strong{color:var(--ink);font-weight:550}.program-main{padding:25px 28px}.program-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:21px}.program-title h3{font-size:17px}.program-title p{font-size:11px;color:var(--muted);margin-top:3px}.program-tools{display:flex;gap:7px}.program-tools .btn{font-size:11px;padding:7px 10px}.schedule-summary{display:flex;align-items:center;gap:18px;background:#f8f9fc;border:1px solid #edf0f5;border-radius:11px;padding:13px 16px;margin-bottom:20px;font-size:11px;color:var(--muted)}.schedule-summary strong{color:var(--ink);font-weight:600}.timeline{position:relative}.timeline:before{content:"";position:absolute;left:58px;top:20px;bottom:20px;width:1px;background:#e8ecf3}.timeline-item{display:grid;grid-template-columns:46px 1fr;gap:26px;position:relative;margin-bottom:9px}.timeline-time{font-size:10px;color:#7d899d;padding-top:16px;text-align:right}.timeline-node{position:absolute;left:54px;top:20px;width:9px;height:9px;border-radius:50%;background:white;border:2px solid var(--c,var(--primary))}.block{border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;gap:12px;align-items:flex-start;background:white}.block-content{flex:1;min-width:0}.block-title{font-size:12px;font-weight:650}.block-desc{font-size:11px;color:var(--muted);line-height:1.7;margin-top:3px}.block-meta{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}.subject-tag{font-size:9px;font-weight:650;padding:2px 7px;border-radius:5px;background:color-mix(in srgb,var(--c) 9%,white);color:var(--c)}.block-duration{font-size:9px;color:var(--muted)}.block-actions{display:flex;gap:4px;align-items:center}.tiny-btn{display:grid;place-items:center;border:0;background:transparent;color:#a4afbf;border-radius:6px;padding:5px}.tiny-btn:hover{background:#f0f1fb;color:var(--primary)}.tiny-btn .icon{width:14px;height:14px}.block-launch{margin-top:2px;padding:6px;border:1px solid var(--line);border-radius:7px;color:var(--primary);background:white;display:grid;place-items:center}.block-launch .icon{width:14px;height:14px}.timeline-item.is-break .block{background:#f5faf8;border-color:#e3eee8;border-style:dashed;padding:10px 14px}.timeline-item.is-break .timeline-time{padding-top:12px}.timeline-item.is-break .timeline-node{top:16px;border-color:#99c3b4;width:7px;height:7px;left:55px}.timeline-item.is-break .block-title{color:#537d6e;font-size:11px}.timeline-item.is-break .block-desc{color:#81958c}.timeline-item.completed .block{opacity:.6}.timeline-item.completed .block-title{text-decoration:line-through}.timeline-item.current .block{box-shadow:0 0 0 2px #c9c8f3;border-color:#bab8ed}.block-check{margin:3px 0 0;width:15px;height:15px;flex-shrink:0}.add-block{margin:13px 0 0 72px;width:calc(100% - 72px);border-style:dashed;color:var(--muted)}.program-foot{margin:18px 0 0 72px;font-size:10px;color:var(--muted)}
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.memo-card,.history-card{padding:25px}.memo-form{display:flex;gap:8px;margin-top:19px}.memo-form .field{font-size:12px}.memo-form select{width:115px;font-size:11px;padding:8px}.memo-form .btn{padding:9px}.memo-items{display:grid;gap:9px;margin-top:18px;max-height:280px;overflow:auto}.memo-entry{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;align-items:flex-start;gap:10px}.memo-entry p{font-size:12px;overflow-wrap:anywhere;line-height:1.7}.memo-tag{display:inline-block;font-size:9px;color:var(--primary);background:var(--primary-soft);padding:1px 6px;border-radius:4px;margin-bottom:5px}.memo-tag.erreur{color:#bf5c6c;background:#fff1f3}.empty{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px}.history-chart{height:155px;display:flex;gap:14px;align-items:flex-end;padding:18px 5px 25px;margin-top:17px;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to top,transparent 0,transparent 34px,#f0f2f7 35px,transparent 36px)}.chart-column{flex:1;height:100%;display:flex;justify-content:flex-end;flex-direction:column;align-items:center;position:relative;gap:5px}.chart-column .chart-bar{width:min(32px,75%);border-radius:5px 5px 0 0;background:#bdbbe9;min-height:3px}.chart-column.current-week .chart-bar{background:#73b9a6}.chart-column .chart-value{font-size:9px;color:#8893a5}.chart-column .chart-label{position:absolute;bottom:-20px;font-size:9px;color:var(--muted)}.history-table-wrap{overflow:auto;max-height:190px;margin-top:17px}table{width:100%;border-collapse:collapse;font-size:10px;white-space:nowrap}th{color:var(--muted);font-weight:500;text-align:left;padding:8px}td{padding:9px 8px;border-top:1px solid var(--line)}td:last-child,th:last-child{text-align:right}.data-card{margin-top:45px;background:linear-gradient(115deg,#edecfb,#f1f5fc);padding:28px 32px;display:flex;justify-content:space-between;gap:30px;align-items:center;border:1px solid #e1e3f3;border-radius:18px}.data-card h3{font-size:18px}.data-card p{font-size:12px;color:#78819a;margin-top:7px;max-width:600px}.data-actions{display:flex;gap:8px;flex-shrink:0}.data-status{margin-top:10px;font-size:10px;color:var(--teal)}footer{padding:29px 0;margin-top:36px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)}.footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center}.footer-inner .brand-name{font-size:12px}.footer-inner p{margin-top:4px}.footer-note{display:flex;align-items:center;gap:7px}
+dialog{padding:0;border:1px solid var(--line);border-radius:19px;box-shadow:0 30px 100px #14244330;color:var(--ink);width:min(610px,calc(100% - 28px));max-height:90dvh;background:white}dialog::backdrop{background:#17243c50;backdrop-filter:blur(4px)}.modal-head{padding:23px 25px 16px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line)}.modal-head h2{font-size:20px;letter-spacing:-.5px}.modal-head p{font-size:12px;color:var(--muted);margin-top:5px}.modal-body{padding:21px 25px}.modal-foot{padding:17px 25px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fafbfe}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}.form-group label{display:block;font-size:11px;font-weight:600;margin-bottom:6px}.form-group.full{grid-column:1/-1}.form-group textarea{resize:vertical;min-height:75px}.help{font-size:10px;color:var(--muted);line-height:1.7;margin-top:6px}.notice{font-size:11px;background:#f4f4fd;border:1px solid #e8e7f8;padding:12px 14px;border-radius:10px;color:#737292;margin:17px 0 0;line-height:1.8}.error{color:#bf445d;font-size:11px;margin-top:13px;min-height:16px}.form-divider{grid-column:1/-1;height:1px;background:var(--line);margin:2px 0}.checkbox-grid{display:flex;flex-wrap:wrap;gap:13px}.checkbox-grid label{display:flex;gap:6px;align-items:center;margin:0;font-size:11px}.file-preview{padding:15px;background:#f7f8fc;border-radius:10px;margin:14px 0;font-size:12px;overflow-wrap:anywhere}.file-preview strong{color:var(--primary)}#toasts{position:fixed;bottom:23px;right:23px;z-index:100;display:grid;gap:9px;max-width:calc(100vw - 36px)}.toast{padding:13px 18px;border:1px solid var(--line);border-left:3px solid var(--teal);box-shadow:0 8px 40px #17243c20;background:white;border-radius:11px;font-size:12px;animation:toastIn .25s ease}.toast.error-toast{border-left-color:#bf445d}@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.hidden{display:none!important}
+@media(min-width:1100px){.section{scroll-margin-top:0}}@media(max-width:1100px){.nav{gap:17px}.header-actions .button-label{display:none}.hero{gap:28px}.stat{padding:17px 15px;gap:11px}.stat .ico-box{width:34px;height:34px}.program-layout{grid-template-columns:220px 1fr}.data-card{align-items:flex-start;flex-direction:column;gap:18px}.data-actions{flex-wrap:wrap}}
+@media(max-width:800px){.container{padding:0 22px}.header-inner{height:67px}.nav{display:none;position:absolute;left:0;right:0;top:66px;padding:16px 22px;background:white;border-bottom:1px solid var(--line);gap:10px;flex-wrap:wrap}.nav.open{display:flex}.nav a{padding:9px 12px;border:0;background:#f6f7fb;border-radius:7px}.menu-button{display:inline-flex}.hero{grid-template-columns:1fr 1fr;gap:22px;padding-top:28px}h1{font-size:36px;letter-spacing:-1.5px}.hero-text{font-size:12px}.hero-visual{padding:20px;min-height:240px}.hero-times{font-size:20px}.hero-times span{font-size:13px;margin:0 2px}.hero-actions{flex-wrap:wrap}.hero-actions .btn{padding:9px 13px;font-size:11px}.stats{grid-template-columns:repeat(2,1fr);gap:11px}.stat{padding:16px 20px}.quota-grid{grid-template-columns:repeat(2,1fr)}.program-layout{grid-template-columns:1fr}.program-sidebar{position:static;padding:14px}.program-sidebar h3,.sidebar-note{display:none}.weekdays{display:flex;gap:5px;overflow:auto}.day-btn{flex:1;min-width:64px;justify-content:center;padding:9px 6px}.day-btn span{display:none}.bottom-grid{grid-template-columns:1fr}.focus-grid{grid-template-columns:1fr 1fr}.timer-card{padding:21px 18px}.timer-ring{width:210px;height:210px}.timer-number{font-size:40px}.break-card{padding:21px}.sound-card{padding:19px}.break-card h3{font-size:18px}.break-card p{font-size:12px}.section-head h2{font-size:25px}.footer-note{display:none}}
+@media(max-width:580px){.container{padding:0 17px}.header-inner{gap:9px}.brand-sub{font-size:8px;letter-spacing:.9px}.brand-name{font-size:13px}.brand-logo{width:34px;height:34px}.header-actions{gap:5px}.header-actions .btn{padding:8px}.header-actions .export-header{display:none}.hero{grid-template-columns:1fr;gap:23px}.hello{margin-bottom:13px}.hero h1{font-size:39px}.hero-text{font-size:13px}.hero-visual{min-height:auto;padding:20px 22px}.hero-times{font-size:25px;margin-top:12px}.mini-blocks{height:28px;margin-top:13px}.visual-bottom{margin-top:13px;padding-top:10px}.hero-actions .btn{font-size:12px;padding:10px 15px}.stats{margin-top:21px}.stat{padding:15px 12px;gap:9px}.stat .value{font-size:23px}.stat .ico-box{width:30px;height:34px;background:transparent}.stat .label{font-size:10px}.section{padding-top:37px}.section-head{align-items:flex-start;margin-bottom:18px}.section-head h2{font-size:23px}.section-head p{font-size:12px}.section-head>.pill{display:none}.focus-grid{grid-template-columns:1fr}.timer-card{padding:22px}.timer-ring{width:235px;height:235px}.timer-number{font-size:45px}.side-stack{gap:14px}.break-card p{min-height:0}.break-card h3{margin-top:12px}.sound-card{padding:20px 23px}.quota-grid{gap:11px}.quota-card{padding:16px}.quota-name{font-size:12px}.quota-count{margin-top:13px}.quota-bottom{gap:5px;align-items:flex-end}.quota-target{max-width:70px;text-align:left;font-size:9px}.program-main{padding:19px 12px}.program-toolbar{align-items:flex-start;padding:0 3px;flex-wrap:wrap}.program-tools{width:100%}.program-tools .btn{flex:1}.schedule-summary{gap:11px;font-size:10px;padding:11px;flex-wrap:wrap}.timeline-item{grid-template-columns:37px 1fr;gap:18px}.timeline:before{left:45px}.timeline-node{left:41px}.timeline-item.is-break .timeline-node{left:42px}.timeline-time{font-size:9px}.block{padding:12px 10px;gap:8px}.block-actions{flex-direction:column;gap:4px}.block-title{font-size:11px}.block-desc{font-size:10px}.timeline-item.is-break .block{padding:10px}.add-block{margin-left:55px;width:calc(100% - 55px)}.program-foot{margin-left:55px;font-size:9px}.memo-card,.history-card{padding:21px 18px}.memo-form{flex-wrap:wrap}.memo-form .field{flex-basis:100%}.memo-form select{flex:1}.data-card{margin-top:32px;padding:23px}.data-actions{width:100%}.data-actions .btn{flex:1;font-size:11px}.data-actions .export-data{flex-basis:100%}.footer-inner{align-items:flex-start;flex-direction:column;gap:9px}.form-grid{gap:13px}.modal-head,.modal-body{padding:19px}.modal-foot{padding:15px 19px}.modal-foot .btn{font-size:11px}.checkbox-grid{gap:10px}h2{font-size:23px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 10 7-10 7Z"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Zm0 0v6h6M8 14h8m-8 3h5"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5C8 2 3 4 3 4v15s5-2 9 1c4-3 9-1 9-1V4s-5-2-9 1Zm0 0v15"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 4v16h17M8 16v-4m5 4V8m5 8V5"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 3C8 2 3 9 6 16c8 7 17-1 14-13ZM4 21 16 9"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="m15 4 5 5M4 20l5-1L21 7l-4-4L5 15Zm8 0h9"/></symbol>
+<symbol id="i-sound" viewBox="0 0 24 24"><path d="M3 10v4h4l5 4V6l-5 4Zm13-2a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+</svg>
+
+<header>
+<div class="container header-inner">
+<a class="brand" href="#accueil" aria-label="MPI Performance — Accueil"><div class="brand-logo">M*</div><div><div class="brand-name">MPI<span>*</span> Performance</div><div class="brand-sub">Un peu chaque jour. Plus loin demain.</div></div></a>
+<nav class="nav" id="nav" aria-label="Navigation principale">
+<a href="#focus" class="active">Concentration</a><a href="#quotas">Quotas</a><a href="#programme">Mon programme</a><a href="#carnet">Carnet & historique</a>
+</nav>
+<div class="header-actions">
+<button class="btn" data-import title="Ouvrir un historique JSON existant"><svg class="icon"><use href="#i-file"/></svg><span class="button-label">Ouvrir un JSON</span></button>
+<button class="btn icon-only export-header" data-export aria-label="Exporter mes données"><svg class="icon"><use href="#i-download"/></svg></button>
+<button class="btn icon-only menu-button" id="menuButton" aria-label="Ouvrir le menu" aria-expanded="false"><svg class="icon"><use href="#i-menu"/></svg></button>
+</div>
+</div>
+</header>
+
+<main class="container">
+<section class="hero" id="accueil">
+<div>
+<div class="hello"><span style="margin-left:0;background:#65a996"></span><b id="dateLabel"></b><span></span><span id="weekLabel" style="display:inline;background:none;width:auto;height:auto;margin:0"></span></div>
+<h1>Moins de dispersion.<br><em>Plus de progression.</em></h1>
+<p class="hero-text">Un espace calme pour vos ambitions en prépa. Planifiez vos matières, trouvez votre rythme et avancez un bloc à la fois.</p>
+<div class="hero-actions"><a href="#focus" class="btn primary" id="heroStart"><svg class="icon"><use href="#i-play"/></svg>Démarrer ma session</a><a href="#programme" class="btn">Personnaliser mon soir<svg class="icon"><use href="#i-arrow"/></svg></a></div>
+</div>
+<div class="hero-visual">
+<div class="visual-top"><span>Votre soirée, en un regard</span><svg class="icon" style="color:var(--primary);width:17px"><use href="#i-spark"/></svg></div>
+<div class="hero-times mono" id="heroTimes">19:50 <span>→</span> 00:45</div>
+<div class="mini-blocks" id="miniBlocks" aria-label="Répartition des blocs du soir"></div>
+<div class="visual-legend"><span><i style="background:#7771d8"></i>Travail ciblé</span><span><i style="background:#d5e0e5"></i>Vraies pauses</span></div>
+<div class="visual-bottom"><span id="heroScheduleMeta">6 blocs · 207 min de focus</span><span class="pill" style="background:#ffffffa0;font-size:9px;color:#668575">À votre rythme</span></div>
+</div>
+</section>
+
+<div class="stats">
+<div class="card stat"><div class="ico-box"><svg class="icon"><use href="#i-book"/></svg></div><div><div class="value"><b id="statExercises">0</b> <span id="statExerciseTarget">/ 21</span></div><div class="label">Exercices cette semaine</div></div></div>
+<div class="card stat"><div class="ico-box" style="background:#eaf5f1;color:#398c78"><svg class="icon"><use href="#i-clock"/></svg></div><div><div class="value"><b id="statFocus">0</b> <span>min</span></div><div class="label">De concentration cumulée</div></div></div>
+<div class="card stat"><div class="ico-box" style="background:#fff5e9;color:#c58b48"><svg class="icon"><use href="#i-check"/></svg></div><div><div class="value"><b id="statBlocks">0</b> <span id="statBlockTarget">/ 6</span></div><div class="label">Blocs validés ce soir</div></div></div>
+<div class="card stat"><div class="ico-box" style="background:#f2eefb;color:#9672bf"><svg class="icon"><use href="#i-chart"/></svg></div><div><div class="value"><b id="statSessions">0</b> <span>sessions</span></div><div class="label">Terminées ce soir</div></div></div>
+</div>
+
+<section class="section" id="focus">
+<div class="section-head"><div><div class="eyebrow">01 / Faire de la place à l'essentiel</div><h2>Une session. Une seule tâche.</h2><p>Le reste peut attendre. Choisissez un format, ou lancez un bloc de votre programme.</p></div><span class="pill"><span class="dot"></span>Votre espace de concentration</span></div>
+<div class="focus-grid">
+<div class="card timer-card">
+<div class="timer-top"><div class="row" style="gap:8px"><svg class="icon" style="color:var(--primary);width:17px"><use href="#i-clock"/></svg><h3>Minuteur de concentration</h3></div><span class="pill" id="timerState" style="background:#f4f5f8;color:#8b95a5;font-size:9px">En attente</span></div>
+<div class="timer-ring">
+<svg viewBox="0 0 230 230" aria-hidden="true"><circle class="track" cx="115" cy="115" r="104"/><circle class="progress" id="timerProgress" cx="115" cy="115" r="104"/></svg>
+<div class="timer-center"><div class="timer-mode" id="timerMode">Exercice · concentration</div><div class="timer-number mono" id="timerDisplay" role="timer" aria-label="Temps restant">20:00</div><div class="small muted" id="timerHint" style="font-size:10px">Un petit pas, pleinement présent.</div></div>
+</div>
+<div class="timer-presets"><button class="preset active" data-min="20">20 min · Exercice</button><button class="preset" data-min="40">40 min · Cours</button><button class="preset" data-min="50">50 min · Focus</button><button class="preset" data-min="5" data-break="true">5 min · Pause</button></div>
+<div class="timer-controls"><button class="btn primary" id="startTimer"><svg class="icon"><use href="#i-play"/></svg><span>Démarrer</span></button><button class="btn icon-only" id="resetTimer" title="Réinitialiser le minuteur" aria-label="Réinitialiser le minuteur"><svg class="icon"><use href="#i-refresh"/></svg></button></div>
+<div class="timer-footer"><span class="dot" style="display:inline-block;background:#9ba7bb;margin-right:5px;width:4px;height:4px"></span>Le temps de focus est enregistré à la fin du bloc.</div>
+</div>
+<div class="side-stack">
+<div class="card break-card">
+<div class="between"><div class="eyebrow">La pause fait partie du travail</div><div class="ico-box"><svg class="icon"><use href="#i-leaf"/></svg></div></div>
+<h3 id="tipTitle">Laissez vos yeux respirer.</h3><p id="tipText">Regardez au loin pendant 20 secondes. Détendez vos épaules, puis prenez quelques respirations lentes. Votre prochain bloc vous remerciera.</p>
+<div class="break-bottom"><button class="text-btn" id="nextTip">Un autre conseil<svg class="icon" style="width:14px"><use href="#i-arrow"/></svg></button><span class="small muted" id="tipCounter" style="font-size:10px">01 / 08</span></div>
+<button class="btn wide hidden" id="suggestBreak" style="margin-top:16px;color:var(--teal);border-color:#c9dfd5">Commencer une pause de 5 min</button>
+</div>
+<div class="card sound-card">
+<div class="between"><div class="row" style="gap:9px"><svg class="icon" style="width:17px;color:var(--primary)"><use href="#i-sound"/></svg><h3>Votre bulle sonore</h3></div><span class="small muted" id="audioState" style="font-size:10px">En silence</span></div>
+<div class="sound-controls"><select id="soundSelect" aria-label="Ambiance sonore"><option value="brown">Bruit brun · profond et régulier</option><option value="rain">Pluie douce · bruit filtré</option><option value="zen">Harmoniques · ambiance calme</option><option value="lofi">Nappe ambient · accords doux</option><option value="gamma">Binaural · écart de 40 Hz</option></select><button class="btn icon-only soft" id="soundToggle" aria-label="Lire l'ambiance"><svg class="icon"><use href="#i-play"/></svg></button></div>
+<div class="sound-volume"><svg class="icon muted" style="width:14px"><use href="#i-sound"/></svg><input type="range" id="volume" min="0" max="100" value="25" aria-label="Volume"><span class="mono muted" id="volumeLabel" style="font-size:10px;min-width:34px">25 %</span></div>
+<label class="check-label"><input type="checkbox" id="linkSound" checked> Lier l'ambiance aux blocs de travail</label>
+<div class="help" id="soundHelp">Son généré localement. Gardez un volume confortable.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section" id="quotas">
+<div class="section-head"><div><div class="eyebrow">02 / La constance plutôt que la course</div><h2>De petites victoires, chaque semaine.</h2><p>Vos objectifs d'exercices. Archivés et remis à zéro chaque nouvelle semaine ISO.</p></div><span class="pill" id="globalQuota">0 % de l'objectif</span></div>
+<div class="quota-grid" id="quotaGrid"></div>
+</section>
+
+<section class="section" id="programme">
+<div class="section-head"><div><div class="eyebrow">03 / Un programme qui vous ressemble</div><h2>Votre semaine, à votre rythme.</h2><p>Changez les matières et les horaires pour chaque jour. Les blocs alternent les efforts et laissent de la place aux pauses.</p></div></div>
+<div class="program-layout">
+<aside class="card program-sidebar"><h3>Mes jours de travail</h3><div class="weekdays" id="weekdays" aria-label="Jour du programme"></div><div class="sidebar-note"><div class="row" style="gap:7px;margin-bottom:7px;color:var(--primary)"><svg class="icon" style="width:15px"><use href="#i-spark"/></svg><strong>Le bon effort au bon moment</strong></div>Commencez par l'abstrait, alternez avec du concret, puis terminez par de la révision légère.<br><br>Le modèle par défaut : <strong>19:50–22:45</strong>, une heure de pause, puis <strong>23:45–00:45</strong>.<br><br>Un programme tardif n'est pas une obligation : avancez la fin pour préserver votre sommeil.</div></aside>
+<div class="card program-main">
+<div class="program-toolbar"><div class="program-title"><h3 id="programDay">Lundi</h3><p id="programDateNote">Programme hebdomadaire récurrent</p></div><div class="program-tools"><button class="btn" id="copyDay"><svg class="icon" style="width:13px"><use href="#i-file"/></svg>Copier vers…</button><button class="btn soft" id="editWindows"><svg class="icon" style="width:13px"><use href="#i-edit"/></svg>Mes horaires</button></div></div>
+<div class="schedule-summary" id="scheduleSummary"></div>
+<div class="timeline" id="timeline"></div>
+<button class="btn wide add-block" id="addBlock">+ Ajouter un bloc ou une pause</button>
+<p class="program-foot">Les validations concernent la soirée en cours (de midi à midi). Elles ne modifient pas vos quotas.</p>
+</div>
+</div>
+</section>
+
+<section class="section" id="carnet">
+<div class="section-head"><div><div class="eyebrow">04 / Garder une trace, prendre du recul</div><h2>Ce que vous apprenez reste.</h2><p>Une erreur comprise aujourd'hui, une hésitation de moins au prochain concours.</p></div></div>
+<div class="bottom-grid">
+<div class="card memo-card">
+<div class="between"><div class="row" style="gap:9px"><svg class="icon" style="color:var(--primary);width:17px"><use href="#i-book"/></svg><h3>Mon carnet de progression</h3></div><span class="pill" id="memoCount">0 notes</span></div>
+<form class="memo-form" id="memoForm"><input class="field" id="memoInput" placeholder="Une astuce, une erreur à ne plus refaire…" maxlength="300" aria-label="Votre note" required><select id="memoTag" aria-label="Type de note"><option value="astuce">Astuce</option><option value="erreur">Erreur</option><option value="concours">À retenir</option></select><button class="btn primary" type="submit" aria-label="Ajouter la note">+</button></form>
+<div class="memo-items" id="memoList"></div>
+<p class="help">Pensez à relire vos notes lors du dernier bloc de révision.</p>
+</div>
+<div class="card history-card">
+<div class="between"><div class="row" style="gap:9px"><svg class="icon" style="color:var(--teal);width:17px"><use href="#i-chart"/></svg><h3>Vos dernières semaines</h3></div><span class="small muted" style="font-size:10px">Exercices réalisés</span></div>
+<div class="history-chart" id="historyChart" role="img" aria-label="Exercices réalisés par semaine"></div>
+<div class="history-table-wrap"><table><thead><tr><th>Semaine</th><th>Maths</th><th>Phys.</th><th>Info</th><th>Fr. / LV</th><th>Total</th></tr></thead><tbody id="historyTable"></tbody></table></div><div id="historyEmpty" class="help">Votre première archive apparaîtra au changement de semaine.</div>
+</div>
+</div>
+</section>
+
+<section class="data-card" id="donnees">
+<div><div class="row"><div class="ico-box" style="background:#ffffffa0"><svg class="icon"><use href="#i-file"/></svg></div><h3>Votre parcours vous appartient.</h3></div><p>Reprenez un historique JSON existant ou créez une sauvegarde sur votre disque. Vos données restent dans ce navigateur, sans compte ni serveur.</p><div class="data-status" id="fileStatus" role="status">● Sauvegarde dans ce navigateur</div></div>
+<div class="data-actions"><button class="btn" data-import><svg class="icon"><use href="#i-file"/></svg>Ouvrir un JSON</button><button class="btn primary" id="createFile">Lier un nouveau fichier</button><button class="btn icon-only export-data" data-export title="Télécharger une copie JSON" aria-label="Télécharger une copie JSON"><svg class="icon"><use href="#i-download"/></svg></button></div>
+</section>
+</main>
+<footer><div class="container footer-inner"><div><div class="brand-name">MPI<span>*</span> Performance</div><p>Le progrès n'a pas besoin de bruit. Juste de régularité.</p></div><div class="footer-note"><span class="dot" style="background:#67a792"></span>Données locales · Aucun compte · À votre rythme</div><div>© <span id="year"></span> · Pour les étudiants MP2I / MPI*</div></div></footer>
+
+<dialog id="blockDialog">
+<form id="blockForm">
+<div class="modal-head"><div><h2 id="blockModalTitle">Modifier le bloc</h2><p>Matière, contenu et horaires : gardez la main.</p></div><button class="tiny-btn" type="button" data-close aria-label="Fermer"><svg class="icon"><use href="#i-close"/></svg></button></div>
+<div class="modal-body"><div class="form-grid">
+<div class="form-group"><label for="blockKind">Type</label><select id="blockKind"><option value="work">Bloc de travail</option><option value="break">Pause</option></select></div>
+<div class="form-group"><label for="blockSubject">Matière / registre</label><select id="blockSubject"><option value="maths">Maths · analytique</option><option value="physics">Physique · concret</option><option value="info">Info MPI · algorithmique</option><option value="french">Français / Langues · verbal</option><option value="mixed">Révision / Mixte · léger</option><option value="custom">Autre matière</option></select></div>
+<div class="form-group full hidden" id="customSubjectGroup"><label for="customSubject">Nom de la matière</label><input class="field" id="customSubject" maxlength="50"></div>
+<div class="form-group full"><label for="blockTitle">Intitulé</label><input class="field" id="blockTitle" maxlength="100" required></div>
+<div class="form-group"><label for="blockStart">Début</label><input class="field" type="time" id="blockStart" required></div>
+<div class="form-group"><label for="blockEnd">Fin</label><input class="field" type="time" id="blockEnd" required></div>
+<div class="form-group full"><label for="blockDesc">Objectif ou conseil de pause</label><textarea class="field" id="blockDesc" maxlength="450"></textarea></div>
+</div><div class="help">Les heures entre 00:00 et 11:59 appartiennent au lendemain. Les blocs ne peuvent pas se chevaucher.</div><div class="error" id="blockError" role="alert"></div></div>
+<div class="modal-foot"><button class="btn danger hidden" id="deleteBlock" type="button">Supprimer</button><button class="btn" type="button" data-close>Annuler</button><button class="btn primary" type="submit">Enregistrer</button></div>
+</form>
+</dialog>
+
+<dialog id="windowsDialog">
+<form id="windowsForm">
+<div class="modal-head"><div><h2>Les horaires du <span id="windowsDay"></span></h2><p>Un rythme décroissant pour accompagner la fatigue.</p></div><button type="button" class="tiny-btn" data-close aria-label="Fermer"><svg class="icon"><use href="#i-close"/></svg></button></div>
+<div class="modal-body">
+<div class="form-grid"><div class="form-group"><label for="windowStart">Début de soirée</label><input type="time" class="field" id="windowStart" value="19:50" required></div><div class="form-group"><label for="windowBreak">Début de la grande pause</label><input type="time" class="field" id="windowBreak" value="22:45" required></div><div class="form-group"><label for="windowResume">Reprise</label><input type="time" class="field" id="windowResume" value="23:45" required></div><div class="form-group"><label for="windowEnd">Fin de soirée</label><input type="time" class="field" id="windowEnd" value="00:45" required></div></div>
+<div class="notice">La régénération répartit 4 blocs avant la grande pause, puis 2 blocs de consolidation. Les durées et les petites pauses s'adaptent à vos horaires. Les matières et les notes de vos 6 premiers blocs sont conservées ; les autres blocs sont remplacés.</div>
+<label class="check-label" style="font-size:12px;margin-top:16px"><input type="checkbox" id="restoreSubjects"> Rétablir aussi les matières et conseils du modèle conseillé</label>
+<div class="error" id="windowsError" role="alert"></div>
+</div>
+<div class="modal-foot"><button class="text-btn" type="button" id="defaultWindows">19:50 → 00:45</button><div class="row"><button type="button" class="btn" data-close>Annuler</button><button class="btn primary" type="submit">Adapter mon programme</button></div></div>
+</form>
+</dialog>
+
+<dialog id="copyDialog">
+<form id="copyForm"><div class="modal-head"><div><h2>Partager ce rythme</h2><p>Copier le programme du <span id="copySource"></span> vers d'autres jours.</p></div><button class="tiny-btn" type="button" data-close aria-label="Fermer"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><div class="checkbox-grid" id="copyDays"></div><div class="notice">Les programmes des jours cochés seront remplacés. Les autres jours ne changent pas.</div><div class="error" id="copyError" role="alert"></div></div><div class="modal-foot"><button class="btn" type="button" data-close>Annuler</button><button class="btn primary" type="submit">Copier le programme</button></div></form>
+</dialog>
+
+<dialog id="importDialog">
+<div class="modal-head"><div><h2>Reprendre votre progression</h2><p>Votre fichier a été lu. Rien n'a encore été modifié.</p></div><button class="tiny-btn" data-close aria-label="Fermer"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><div class="file-preview" id="importPreview"></div><div class="notice">L'import remplace les données actuelles par celles du fichier, y compris le programme s'il est présent. Une copie de sécurité des données actuelles est conservée dans ce navigateur avant l'import.</div><p class="help" id="importWriteNote"></p></div><div class="modal-foot"><button class="btn" data-close>Annuler</button><button class="btn primary" id="confirmImport">Importer et reprendre</button></div>
+</dialog>
+<input type="file" id="fileInput" accept=".json,application/json" hidden>
+<div id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const icon=n=>`<svg class="icon" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const pad=n=>String(n).padStart(2,'0'), uid=()=>globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+Math.random().toString(36).slice(2);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const num=(v,f=0,max=10000000)=>Number.isFinite(Number(v))?Math.min(max,Math.max(0,Number(v))):f;
+const DAYS=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'], ORDER=[1,2,3,4,5,6,0];
+const SUBJECTS={maths:{label:'Maths',color:'#7771d8',target:8},physics:{label:'Physique',color:'#5c9bc2',target:4},info:{label:'Info MPI',color:'#4b9d8b',target:6},french:{label:'Français / Langues',color:'#c99b5b',target:3},mixed:{label:'Révision / Mixte',color:'#8b98ae',target:0},custom:{label:'Autre',color:'#a37bb7',target:0}};
+const QKEYS=['maths','physics','info','french'], STORAGE='mpi-performance-state';
+function toast(message,error=false){const el=document.createElement('div');el.className='toast'+(error?' error-toast':'');el.textContent=message;$('#toasts').append(el);setTimeout(()=>el.remove(),4800)}
+function weekKey(date=new Date()){const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));const y=d.getUTCFullYear();return y+'-W'+pad(Math.ceil((((d-new Date(Date.UTC(y,0,1)))/86400000)+1)/7))}
+function eveningDate(){const d=new Date();if(d.getHours()<12)d.setDate(d.getDate()-1);return d}
+function eveningKey(){const d=eveningDate();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
+function minutes(s){if(typeof s!=='string'||!/^([01]\d|2[0-3]):[0-5]\d$/.test(s))return NaN;const [h,m]=s.split(':').map(Number);return h*60+m+(h<12?1440:0)}
+function time(m){m=((m%1440)+1440)%1440;return pad(Math.floor(m/60))+':'+pad(m%60)}
+function duration(b){return minutes(b.end)-minutes(b.start)}
+function defaultPlan(){
+const a=[
+['work','19:50','20:40','maths','Maths — exercices de fond',"La tâche la plus abstraite quand l'attention est disponible. Cherchez sans correction, puis explicitez votre méthode."],
+['break','20:40','20:50','mixed','Pause active',"Quittez le bureau. Marchez quelques minutes et buvez un verre d'eau, sans ouvrir votre téléphone."],
+['work','20:50','21:30','physics','Physique — du schéma au calcul',"Changez de registre avec un problème concret. Posez les hypothèses et dessinez le système avant de calculer."],
+['break','21:30','21:38','mixed','Les yeux au loin',"Regardez un point éloigné pendant 20 secondes. Relâchez la nuque et les épaules, puis respirez lentement."],
+['work','21:38','22:10','info','Info MPI — coder, tester, comprendre',"Passez à l'algorithmique : implémentez une fonction, testez ses limites et justifiez sa complexité."],
+['break','22:10','22:15','mixed','Micro-pause',"Fermez les yeux un instant. Inspirez et expirez tranquillement. Laissez le code derrière vous."],
+['work','22:15','22:45','french','Français / Langues — changer de registre',"Une tâche verbale pour relâcher l'effort logique : fiche d'œuvre, plan d'essai ou rappel de vocabulaire."],
+['break','22:45','23:45','mixed','Grande pause — une vraie coupure',"Repas léger, douche ou petite marche. Diminuez la lumière et évitez le défilement sur écran. Si la fatigue est forte, privilégiez le sommeil."],
+['work','23:45','00:10','maths','Maths — révision active du cours',"Consolidez, sans nouveau chapitre : retrouvez sur feuille blanche les définitions et théorèmes du jour."],
+['break','00:10','00:15','mixed','Pause calme',"Quelques gorgées d'eau, une posture relâchée et une lumière douce. Préparez simplement le dernier bloc."],
+['work','00:15','00:45','mixed',"Flashcards & carnet d'erreurs","Une fin légère : rappel de formules, relecture des erreurs et préparation du lendemain. Ne sacrifiez pas votre sommeil pour terminer."]
+];
+return a.map(([type,start,end,subject,title,desc])=>({id:uid(),type,start,end,subject,title,desc}));
+}
+function defaults(){return {version:3,currentWeek:weekKey(),createdAt:new Date().toISOString(),quotas:Object.fromEntries(QKEYS.map(k=>[k,{done:0,target:SUBJECTS[k].target}])),programs:Object.fromEntries(ORDER.map(d=>[d,defaultPlan()])),completed:{},checklist:[],checklistDate:eveningKey(),focusMinutes:0,sessionsToday:0,sessionsTodayDate:eveningKey(),sessionCount:0,streak:0,memo:[],history:[],settings:{track:'brown',volume:25,linkToTimer:true}}}
+function normalizePlan(list){
+if(!Array.isArray(list)||list.length>60)throw Error('Programme de journée invalide.');
+const ids=new Set();
+const result=list.map(b=>{
+if(!b||!['work','break'].includes(b.type)||!Number.isFinite(minutes(b.start))||!Number.isFinite(minutes(b.end))||duration(b)<=0)throw Error('Un bloc comporte des horaires invalides.');
+let id=typeof b.id==='string'&&b.id.length<100?b.id:uid();if(ids.has(id))id=uid();ids.add(id);
+return {id,type:b.type,start:b.start,end:b.end,subject:SUBJECTS[b.subject]?b.subject:'mixed',customSubject:String(b.customSubject||'').slice(0,50),title:String(b.title||'Bloc').slice(0,100),desc:String(b.desc||b.tip||'').slice(0,450)}
+}).sort((a,b)=>minutes(a.start)-minutes(b.start));
+for(let i=1;i<result.length;i++)if(minutes(result[i].start)<minutes(result[i-1].end))throw Error('Des blocs du fichier se chevauchent.');
+return result
+}
+function normalize(raw){
+if(!raw||Array.isArray(raw)||typeof raw!=='object')throw Error('Le fichier doit contenir un objet JSON de suivi.');
+if(!['quotas','history','programs','memo','focusMinutes','currentWeek'].some(k=>Object.prototype.hasOwnProperty.call(raw,k)))throw Error("Ce JSON ne ressemble pas à un fichier d'historique MPI.");
+const s=defaults();
+if(typeof raw.createdAt==='string')s.createdAt=raw.createdAt;
+if(typeof raw.currentWeek==='string'&&/^\d{4}-W\d{2}$/.test(raw.currentWeek))s.currentWeek=raw.currentWeek;
+QKEYS.forEach(k=>{if(raw.quotas?.[k])s.quotas[k]={done:Math.floor(num(raw.quotas[k].done)),target:Math.max(1,Math.floor(num(raw.quotas[k].target,SUBJECTS[k].target,999)))}});
+if(raw.programs&&typeof raw.programs==='object')ORDER.forEach(d=>{if(raw.programs[d]!==undefined)s.programs[d]=normalizePlan(raw.programs[d])});
+s.focusMinutes=num(raw.focusMinutes);s.sessionCount=Math.floor(num(raw.sessionCount));s.sessionsToday=Math.floor(num(raw.sessionsToday));s.streak=Math.floor(num(raw.streak));
+if(typeof raw.sessionsTodayDate==='string')s.sessionsTodayDate=raw.sessionsTodayDate;
+if(typeof raw.checklistDate==='string')s.checklistDate=raw.checklistDate;
+if(raw.completed&&typeof raw.completed==='object'&&!Array.isArray(raw.completed)){Object.entries(raw.completed).slice(-100).forEach(([k,v])=>{if(/^\d{4}-\d\d-\d\d$/.test(k)&&Array.isArray(v))s.completed[k]=v.filter(x=>typeof x==='string').slice(0,60)})}
+if(Array.isArray(raw.checklist))s.checklist=raw.checklist.slice(0,6).map(Boolean);
+if(Array.isArray(raw.memo))s.memo=raw.memo.filter(m=>m&&typeof m.text==='string').slice(0,500).map(m=>({id:typeof m.id==='string'?m.id:uid(),text:m.text.slice(0,300),tag:['astuce','erreur','concours'].includes(m.tag)?m.tag:'astuce'}));
+if(Array.isArray(raw.history))s.history=raw.history.filter(h=>h&&/^\d{4}-W\d{2}$/.test(h.week)).slice(-104).map(h=>{const row={week:h.week};QKEYS.forEach(k=>row[k]=Math.floor(num(h[k]??h.quotas?.[k]?.done)));row.total=QKEYS.reduce((t,k)=>t+row[k],0);return row});
+if(raw.settings){s.settings.volume=num(raw.settings.volume,25,100);s.settings.track=['brown','rain','zen','lofi','gamma'].includes(raw.settings.track)?raw.settings.track:'brown';s.settings.linkToTimer=raw.settings.linkToTimer!==false}
+if(s.checklistDate===eveningKey()&&s.checklist.some(Boolean)&&!s.completed[eveningKey()]){const work=s.programs[eveningDate().getDay()].filter(b=>b.type==='work');s.completed[eveningKey()]=work.filter((b,i)=>s.checklist[i]).map(b=>b.id)}
+return s
+}
+let state=defaults(), storageWorking=true;
+try{const raw=localStorage.getItem(STORAGE);if(raw)state=normalize(JSON.parse(raw))}catch(e){storageWorking=false}
+let selectedDay=eveningDate().getDay(), handle=null, writing=false, dirty=false, pendingImport=null, writeErrorShown=false;
+function total(){return QKEYS.reduce((n,k)=>n+state.quotas[k].done,0)}
+function rollover(){
+let changed=false;const wk=weekKey(),ek=eveningKey();
+if(state.currentWeek!==wk){const q=state.quotas,row={week:state.currentWeek};QKEYS.forEach(k=>row[k]=q[k].done);row.total=total();if(!state.history.some(h=>h.week===row.week))state.history.push(row);state.history=state.history.slice(-104);QKEYS.forEach(k=>q[k].done=0);state.currentWeek=wk;changed=true;toast('Nouvelle semaine : vos exercices ont été archivés.')}
+if(state.sessionsTodayDate!==ek){state.sessionsToday=0;state.sessionsTodayDate=ek;changed=true}
+const keys=Object.keys(state.completed).sort();if(keys.length>60)keys.slice(0,-60).forEach(k=>delete state.completed[k]);
+return changed
+}
+function localSave(){try{localStorage.setItem(STORAGE,JSON.stringify(state));storageWorking=true;return true}catch(e){if(storageWorking)toast('Stockage du navigateur indisponible. Exportez une copie JSON.',true);storageWorking=false;return false}}
+let writeTimer;
+function save(){localSave();dirty=true;clearTimeout(writeTimer);writeTimer=setTimeout(writeFile,450)}
+async function writeFile(){
+if(!handle||writing||!dirty)return;
+writing=true;dirty=false;const target=handle;
+try{const w=await target.createWritable();await w.write(JSON.stringify(state,null,2));await w.close();if(handle===target){writeErrorShown=false;setStatus(`Fichier lié : ${target.name} · enregistré à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`)}}catch(e){dirty=true;if(handle===target){setStatus('Écriture suspendue · exportez une copie ou ouvrez à nouveau le fichier.',true);if(!writeErrorShown)toast('Le fichier ne peut plus être écrit. Vos données restent dans le navigateur.',true);writeErrorShown=true}}finally{writing=false}
+if(dirty&&!writeErrorShown&&handle)setTimeout(writeFile,100)
+}
+function setStatus(text,error=false){$('#fileStatus').textContent='● '+text;$('#fileStatus').style.color=error?'#b85a6c':'var(--teal)'}
+function download(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`mpi-performance-${state.currentWeek}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);toast('Votre copie JSON est prête.')}
+$$('[data-export]').forEach(b=>b.addEventListener('click',download));
+async function readFile(file,fileHandle=null){
+try{if(file.size>5*1024*1024)throw Error('Le fichier dépasse la limite de 5 Mo.');const next=normalize(JSON.parse(await file.text()));pendingImport={state:next,handle:fileHandle,name:file.name};$('#importPreview').innerHTML=`<strong>${esc(file.name)}</strong><br>${next.history.length} semaine(s) archivée(s) · ${next.memo.length} note(s) · ${next.focusMinutes} min de focus<br><span class="muted">Semaine enregistrée : ${esc(next.currentWeek)} · 7 programmes journaliers</span>`;$('#importWriteNote').textContent=fileHandle?'Après confirmation, nous demanderons votre accord pour enregistrer les prochaines modifications dans ce même fichier. Sans permission, il sera simplement importé.':'Votre navigateur importe ce fichier sans pouvoir le modifier directement. Utilisez « Télécharger une copie » pour enregistrer vos changements.';$('#importDialog').showModal()}catch(e){pendingImport=null;toast(e instanceof SyntaxError?'Le fichier ne contient pas un JSON valide.':e.message,true)}
+}
+async function openExisting(){
+if('showOpenFilePicker' in window){try{const [h]=await window.showOpenFilePicker({multiple:false,types:[{description:'Historique MPI JSON',accept:{'application/json':['.json']}}]});await readFile(await h.getFile(),h);return}catch(e){if(e.name==='AbortError')return;if(!['SecurityError','NotAllowedError'].includes(e.name)){toast('Impossible de lire ce fichier.',true);return}}}
+$('#fileInput').click()
+}
+$$('[data-import]').forEach(b=>b.addEventListener('click',openExisting));
+$('#fileInput').addEventListener('change',async e=>{const f=e.target.files[0];if(f)await readFile(f);e.target.value=''});
+$('#confirmImport').addEventListener('click',async()=>{
+if(!pendingImport)return;
+const b=$('#confirmImport');b.disabled=true;
+const incoming=pendingImport;let linked=null;
+try{if(incoming.handle){let permission=await incoming.handle.queryPermission({mode:'readwrite'});if(permission!=='granted')permission=await incoming.handle.requestPermission({mode:'readwrite'});if(permission==='granted')linked=incoming.handle}}catch(e){}
+try{localStorage.setItem('mpi-performance-before-import',JSON.stringify(state))}catch(e){toast('La copie de sécurité locale est indisponible. Exportez vos données avant tout import.',true);b.disabled=false;return}
+pauseTimer();stopSound();clearTimeout(writeTimer);handle=linked;state=incoming.state;selectedDay=eveningDate().getDay();rollover();T={...newTimer()};save();applySettings();renderAll();renderTimer();$('#importDialog').close();pendingImport=null;b.disabled=false;setStatus(linked?`Fichier lié : ${linked.name}`:`${incoming.name} importé · sauvegarde dans ce navigateur`);toast('Votre progression a été restaurée.');if(linked)await writeFile()
+});
+$('#createFile').addEventListener('click',async()=>{
+if(!window.showSaveFilePicker){toast('La liaison directe n’est pas disponible ici. Une copie JSON sera téléchargée.');download();return}
+try{const h=await window.showSaveFilePicker({suggestedName:'mpi-performance.json',types:[{description:'Données MPI JSON',accept:{'application/json':['.json']}}]});const w=await h.createWritable();await w.write(JSON.stringify(state,null,2));await w.close();handle=h;writeErrorShown=false;setStatus(`Fichier lié : ${h.name} · enregistrement automatique`);toast('Fichier créé et lié pour cette session.')}catch(e){if(e.name!=='AbortError')toast('Liaison impossible dans ce contexte. Utilisez le téléchargement JSON.',true)}
+});
+
+const TIPS=[
+['Laissez vos yeux respirer.','Regardez au loin pendant 20 secondes. Détendez vos épaules, puis prenez quelques respirations lentes. Votre prochain bloc vous remerciera.'],
+['Quittez vraiment votre bureau.','Deux à trois minutes de marche douce suffisent pour changer de posture. Laissez votre travail là où il est : vous y reviendrez avec plus de recul.'],
+["Un verre d'eau, simplement.","Buvez quelques gorgées et aérez la pièce si possible. Une pause peut être simple : pas besoin d'ajouter une nouvelle tâche."],
+['Le téléphone peut attendre.','Gardez-le hors de portée. Les notifications et les vidéos courtes peuvent rendre la reprise plus difficile : offrez-vous un vrai changement d’activité.'],
+['Respirez sans forcer.','Pendant une minute, inspirez doucement et expirez un peu plus longtemps. Restez confortable, sans retenir votre souffle.'],
+['Déposez vos pensées sur papier.',"Notez la prochaine étape de l’exercice avant de faire une pause. Vous pourrez lâcher prise sans craindre de perdre le fil."],
+['Après 22 h, ralentissez.','Diminuez la lumière et privilégiez une activité calme. Si vous somnolez ou peinez à comprendre, écourtez la soirée et protégez votre sommeil.'],
+['Rechargez, sans vous surcharger.','Pendant la grande pause : un repas léger, quelques pas ou une douche. Évitez de transformer cette coupure en une autre session devant un écran.']
+];
+let tipIndex=0;
+function showTip(custom){const tip=custom||TIPS[tipIndex];$('#tipTitle').textContent=tip[0];$('#tipText').textContent=tip[1];$('#tipCounter').textContent=custom?'PAUSE DU PROGRAMME':`${pad(tipIndex+1)} / ${pad(TIPS.length)}`}
+$('#nextTip').onclick=()=>{tipIndex=(tipIndex+1)%TIPS.length;showTip()};
+
+function todayPlan(){return state.programs[eveningDate().getDay()]}
+function completed(){return state.completed[eveningKey()]||[]}
+function renderStats(){
+const target=QKEYS.reduce((n,k)=>n+state.quotas[k].target,0),works=todayPlan().filter(b=>b.type==='work');
+$('#statExercises').textContent=total();$('#statExerciseTarget').textContent='/ '+target;$('#statFocus').textContent=Math.round(state.focusMinutes);$('#statSessions').textContent=state.sessionsToday;
+$('#statBlocks').textContent=works.filter(b=>completed().includes(b.id)).length;$('#statBlockTarget').textContent='/ '+works.length;
+$('#globalQuota').textContent=Math.round(Math.min(100,total()/target*100))+" % de l'objectif";
+const p=todayPlan();$('#heroTimes').innerHTML=p.length?`${esc(p[0].start)} <span>→</span> ${esc(p[p.length-1].end)}`:'Soirée libre';
+$('#miniBlocks').innerHTML=p.map(b=>`<div title="${esc(b.title)} · ${duration(b)} min" class="mini-block ${b.type==='break'?'pause':''}" style="flex:${duration(b)};background:${SUBJECTS[b.subject].color}"></div>`).join('');
+$('#heroScheduleMeta').textContent=`${works.length} blocs · ${works.reduce((n,b)=>n+duration(b),0)} min de focus`;
+$('#weekLabel').textContent='Semaine '+state.currentWeek.split('W')[1];
+}
+function renderQuotas(){
+$('#quotaGrid').innerHTML=QKEYS.map(k=>{const s=SUBJECTS[k],q=state.quotas[k],p=Math.min(100,Math.round(q.done/q.target*100));return `<div class="card quota-card" style="--c:${s.color}"><div class="quota-name"><span class="subject-dot"></span>${esc(s.label)}</div><div class="quota-count">${q.done} <span>/ ${q.target}</span></div><div class="bar" role="progressbar" aria-label="Objectif ${esc(s.label)}" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><div style="width:${p}%"></div></div><div class="quota-bottom"><button class="quota-target" data-target="${k}">Modifier l'objectif</button><div class="steps"><button class="step" data-quota="${k}" data-delta="-1" aria-label="Retirer un exercice ${esc(s.label)}">−</button><button class="step" data-quota="${k}" data-delta="1" aria-label="Ajouter un exercice ${esc(s.label)}">+</button></div></div></div>`}).join('')
+}
+$('#quotaGrid').addEventListener('click',e=>{const b=e.target.closest('[data-quota],[data-target]');if(!b)return;if(b.dataset.quota){const q=state.quotas[b.dataset.quota];q.done=Math.max(0,q.done+Number(b.dataset.delta))}else{const k=b.dataset.target,v=prompt(`Objectif hebdomadaire — ${SUBJECTS[k].label} (1 à 999 exercices)`,state.quotas[k].target);if(v===null)return;if(!/^\d+$/.test(v.trim())||Number(v)<1||Number(v)>999){toast('Choisissez un nombre entier entre 1 et 999.',true);return}state.quotas[k].target=Number(v)}save();renderQuotas();renderStats();renderHistory()});
+
+function renderDays(){$('#weekdays').innerHTML=ORDER.map(d=>`<button class="day-btn ${selectedDay===d?'active':''}" data-day="${d}" aria-pressed="${selectedDay===d}">${DAYS[d]}<span>${d===eveningDate().getDay()?'Ce soir':state.programs[d].filter(b=>b.type==='work').length+' blocs'}</span></button>`).join('')}
+$('#weekdays').onclick=e=>{const b=e.target.closest('[data-day]');if(!b)return;selectedDay=Number(b.dataset.day);renderProgram()};
+function currentMinute(){const d=new Date();return (d.getHours()<12?1440:0)+d.getHours()*60+d.getMinutes()+d.getSeconds()/60}
+function renderProgram(){
+renderDays();const list=state.programs[selectedDay],work=list.filter(b=>b.type==='work'),focus=work.reduce((n,b)=>n+duration(b),0),pause=list.filter(b=>b.type==='break').reduce((n,b)=>n+duration(b),0),isToday=selectedDay===eveningDate().getDay();
+$('#programDay').textContent=DAYS[selectedDay]+(isToday?' · votre soirée':'');$('#programDateNote').textContent='Programme hebdomadaire récurrent · modifiable à tout moment';
+$('#scheduleSummary').innerHTML=`<span>${icon('clock')} <strong>${list.length?esc(list[0].start)+' → '+esc(list[list.length-1].end):'Soirée libre'}</strong></span><span><strong>${work.length}</strong> blocs</span><span><strong>${focus} min</strong> de focus</span><span>${pause} min de pauses</span>`;
+$('#scheduleSummary').querySelector('.icon').style.cssText='width:12px;height:12px;vertical-align:-2px;margin-right:4px';
+$('#timeline').innerHTML=list.length?list.map(b=>{
+const br=b.type==='break',done=isToday&&completed().includes(b.id),now=isToday&&currentMinute()>=minutes(b.start)&&currentMinute()<minutes(b.end),subject=SUBJECTS[b.subject];
+return `<div class="timeline-item ${br?'is-break':''} ${done?'completed':''} ${now?'current':''}" style="--c:${subject.color}" data-block="${esc(b.id)}"><div class="timeline-time mono">${esc(b.start)}</div><div class="timeline-node"></div><div class="block">${!br?`<input class="block-check" type="checkbox" data-complete="${esc(b.id)}" ${done?'checked':''} ${!isToday?'disabled':''} aria-label="Valider ${esc(b.title)}" title="${isToday?'Valider ce bloc':'Les validations sont disponibles pour la soirée en cours'}">`:''}<div class="block-content"><div class="block-title">${esc(b.title)}</div><div class="block-desc">${esc(b.desc)}</div><div class="block-meta">${!br?`<span class="subject-tag">${esc(b.subject==='custom'?b.customSubject||'Autre':subject.label)}</span>`:''}<span class="block-duration mono">${esc(b.start)}–${esc(b.end)} · ${duration(b)} min</span>${now?'<span class="subject-tag">En ce moment</span>':''}</div></div><div class="block-actions"><button class="tiny-btn" data-edit="${esc(b.id)}" aria-label="Modifier ${esc(b.title)}" title="Modifier la matière ou les horaires">${icon('edit')}</button><button class="block-launch" data-launch="${esc(b.id)}" aria-label="Lancer ${esc(b.title)}" title="Lancer le bloc entier dans le minuteur">${icon('play')}</button></div></div></div>`
+}).join(''):'<div class="empty">Une soirée libre. Ajoutez un bloc ou adaptez vos horaires.</div>';
+}
+$('#timeline').addEventListener('click',e=>{const edit=e.target.closest('[data-edit]'),launch=e.target.closest('[data-launch]');if(edit)openBlock(edit.dataset.edit);if(launch){const b=state.programs[selectedDay].find(b=>b.id===launch.dataset.launch);if(!canReplaceTimer())return;setTimer(duration(b)*60,b.title,b.type,b.id,selectedDay);startTimer();$('#focus').scrollIntoView({behavior:'smooth'});toast('Bloc lancé pour '+duration(b)+' minutes.')}});
+$('#timeline').addEventListener('change',e=>{if(!e.target.matches('[data-complete]'))return;const id=e.target.dataset.complete,key=eveningKey(),ids=new Set(state.completed[key]||[]);e.target.checked?ids.add(id):ids.delete(id);state.completed[key]=[...ids];save();renderStats();renderProgram()});
+
+let editingId=null;
+function openBlock(id=null){
+editingId=id;const p=state.programs[selectedDay],b=p.find(x=>x.id===id),last=p[p.length-1],start=last?minutes(last.end):1190;
+$('#blockModalTitle').textContent=b?'Modifier ce bloc':'Un nouveau bloc';
+$('#blockKind').value=b?.type||'work';$('#blockSubject').value=b?.subject||'mixed';$('#customSubject').value=b?.customSubject||'';$('#blockTitle').value=b?.title||'Révision active';$('#blockDesc').value=b?.desc||'';
+$('#blockStart').value=b?.start||time(start);$('#blockEnd').value=b?.end||time(Math.min(2159,start+25));$('#blockError').textContent='';$('#deleteBlock').classList.toggle('hidden',!b);updateSubjectField();$('#blockDialog').showModal()
+}
+function updateSubjectField(){const br=$('#blockKind').value==='break';$('#blockSubject').disabled=br;$('#customSubjectGroup').classList.toggle('hidden',br||$('#blockSubject').value!=='custom')}
+$('#blockKind').onchange=updateSubjectField;$('#blockSubject').onchange=updateSubjectField;$('#addBlock').onclick=()=>openBlock();
+$('#blockForm').onsubmit=e=>{
+e.preventDefault();const start=$('#blockStart').value,end=$('#blockEnd').value,a=minutes(start),z=minutes(end),type=$('#blockKind').value;
+if(!Number.isFinite(a)||!Number.isFinite(z)||z<=a){$('#blockError').textContent='La fin doit se situer après le début (soirée de midi au lendemain midi).';return}
+const others=state.programs[selectedDay].filter(b=>b.id!==editingId);
+if(others.some(b=>a<minutes(b.end)&&z>minutes(b.start))){$('#blockError').textContent='Ces horaires chevauchent un autre bloc. Modifiez le début ou la fin.';return}
+if(type==='work'&&$('#blockSubject').value==='custom'&&!$('#customSubject').value.trim()){$('#blockError').textContent='Donnez un nom à votre matière.';return}
+if(!$('#blockTitle').value.trim()){$('#blockError').textContent='Donnez un intitulé à ce bloc.';return}
+const b={id:editingId||uid(),type,start,end,subject:type==='break'?'mixed':$('#blockSubject').value,customSubject:$('#customSubject').value.trim(),title:$('#blockTitle').value.trim(),desc:$('#blockDesc').value.trim()};
+state.programs[selectedDay]=[...others,b].sort((a,b)=>minutes(a.start)-minutes(b.start));save();renderStats();renderProgram();$('#blockDialog').close();toast('Votre programme a été mis à jour.')
+};
+$('#deleteBlock').onclick=()=>{if(!confirm('Supprimer ce bloc du programme du '+DAYS[selectedDay].toLowerCase()+' ?'))return;state.programs[selectedDay]=state.programs[selectedDay].filter(b=>b.id!==editingId);save();renderProgram();renderStats();$('#blockDialog').close();toast('Bloc supprimé.')};
+
+function fillWindows(useDefault=false){
+const p=useDefault?defaultPlan():state.programs[selectedDay],large=p.find(b=>b.type==='break'&&duration(b)>=30);
+$('#windowStart').value=p[0]?.start||'19:50';$('#windowBreak').value=large?.start||'22:45';$('#windowResume').value=large?.end||'23:45';$('#windowEnd').value=p[p.length-1]?.end||'00:45'
+}
+$('#editWindows').onclick=()=>{fillWindows();$('#windowsDay').textContent=DAYS[selectedDay].toLowerCase();$('#windowsError').textContent='';$('#restoreSubjects').checked=false;$('#windowsDialog').showModal()};
+$('#defaultWindows').onclick=()=>fillWindows(true);
+function allocate(total,weights){const sum=weights.reduce((a,b)=>a+b,0),raw=weights.map(w=>w/sum*total),out=raw.map(Math.floor);let remain=total-out.reduce((a,b)=>a+b,0);const order=raw.map((n,i)=>({i,f:n-out[i]})).sort((a,b)=>b.f-a.f);for(let j=0;j<remain;j++)out[order[j].i]++;return out}
+$('#windowsForm').onsubmit=e=>{
+e.preventDefault();const [a,b,c,d]=['windowStart','windowBreak','windowResume','windowEnd'].map(id=>minutes($('#'+id).value));
+if(![a,b,c,d].every(Number.isFinite)||!(a<b&&b<c&&c<d)){$('#windowsError').textContent='Respectez cet ordre : début, grande pause, reprise, puis fin. Minuit appartient au lendemain.';return}
+if(b-a<80||d-c<35){$('#windowsError').textContent='Prévoyez au moins 80 min avant la grande pause et 35 min après, pour conserver six blocs et leurs petites pauses.';return}
+const model=defaultPlan(),old=state.programs[selectedDay].filter(b=>b.type==='work'),first=allocate(b-a,[50,10,40,8,32,5,30]),second=allocate(d-c,[25,5,30]),lengths=[...first,c-b,...second];let cursor=a,wi=0;
+const plan=model.map((block,i)=>{const result={...block,id:uid(),start:time(cursor),end:time(cursor+lengths[i])};cursor+=lengths[i];if(block.type==='work'){const previous=old[wi++];if(!$('#restoreSubjects').checked&&previous){result.subject=previous.subject;result.customSubject=previous.customSubject||'';result.title=previous.title;result.desc=previous.desc}}return result});
+state.programs[selectedDay]=plan;save();renderProgram();renderStats();$('#windowsDialog').close();toast('Horaires adaptés : les durées et les pauses ont été recalculées.')
+};
+$('#copyDay').onclick=()=>{$('#copySource').textContent=DAYS[selectedDay].toLowerCase();$('#copyDays').innerHTML=ORDER.filter(d=>d!==selectedDay).map(d=>`<label><input type="checkbox" value="${d}">${DAYS[d]}</label>`).join('');$('#copyError').textContent='';$('#copyDialog').showModal()};
+$('#copyForm').onsubmit=e=>{e.preventDefault();const targets=Array.from($('#copyDays').querySelectorAll('input:checked')).map(i=>i.value);if(!targets.length){$('#copyError').textContent='Choisissez au moins un jour.';return}targets.forEach(d=>state.programs[d]=state.programs[selectedDay].map(b=>({...clone(b),id:uid()})));save();renderStats();renderProgram();$('#copyDialog').close();toast('Programme copié vers '+targets.length+' jour(s).')};
+
+function renderMemo(){
+$('#memoCount').textContent=state.memo.length+' note'+(state.memo.length>1?'s':'');
+$('#memoList').innerHTML=state.memo.length?state.memo.map(m=>`<div class="memo-entry"><div style="flex:1;min-width:0"><span class="memo-tag ${m.tag==='erreur'?'erreur':''}">${m.tag==='erreur'?'Erreur à comprendre':m.tag==='concours'?'À retenir':'Astuce'}</span><p>${esc(m.text)}</p></div><button class="tiny-btn" data-remove-memo="${esc(m.id)}" aria-label="Supprimer cette note">${icon('trash')}</button></div>`).join(''):'<div class="empty">Votre carnet attend sa première idée.<br><span class="help">Notez la cause de l’erreur, pas seulement son résultat.</span></div>'
+}
+$('#memoForm').onsubmit=e=>{e.preventDefault();const text=$('#memoInput').value.trim();if(!text)return;if(state.memo.length>=500){toast('Le carnet est limité à 500 notes. Exportez puis retirez des notes.',true);return}state.memo.unshift({id:uid(),text,tag:$('#memoTag').value});$('#memoInput').value='';save();renderMemo()};
+$('#memoList').onclick=e=>{const b=e.target.closest('[data-remove-memo]');if(!b)return;state.memo=state.memo.filter(m=>m.id!==b.dataset.removeMemo);save();renderMemo()};
+function renderHistory(){
+const rows=[...state.history].sort((a,b)=>a.week.localeCompare(b.week)),data=[...rows.slice(-7),{week:state.currentWeek,total:total(),current:true}],max=Math.max(10,...data.map(d=>d.total));
+$('#historyChart').innerHTML=data.map(r=>`<div class="chart-column ${r.current?'current-week':''}" title="${esc(r.week)} : ${r.total} exercices"><span class="chart-value mono">${r.total}</span><div class="chart-bar" style="height:${Math.max(2,r.total/max*85)}%"></div><span class="chart-label mono">${r.current?'En cours':'S'+esc(r.week.split('W')[1])}</span></div>`).join('');
+$('#historyChart').setAttribute('aria-label',data.map(r=>`${r.week} : ${r.total} exercices`).join(', '));
+$('#historyTable').innerHTML=rows.slice(-8).reverse().map(r=>`<tr><td class="mono">${esc(r.week)}</td>${QKEYS.map(k=>`<td>${r[k]}</td>`).join('')}<td><strong>${r.total}</strong></td></tr>`).join('');$('#historyEmpty').classList.toggle('hidden',!!rows.length)
+}
+
+let audioCtx=null,audioNodes=[],soundPlaying=false,soundGain=null;
+function context(){if(!audioCtx){const C=window.AudioContext||window.webkitAudioContext;if(!C)throw Error('Audio indisponible dans ce navigateur.');audioCtx=new C()}if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});return audioCtx}
+function stopSound(){
+const nodes=audioNodes;audioNodes=[];soundPlaying=false;if(soundGain&&audioCtx){try{soundGain.gain.cancelScheduledValues(audioCtx.currentTime);soundGain.gain.setTargetAtTime(0,audioCtx.currentTime,.04)}catch(e){}}
+setTimeout(()=>nodes.forEach(n=>{try{n.stop?.();n.disconnect()}catch(e){}}),220);soundGain=null;renderSound()
+}
+function startSound(){
+try{
+stopSound();const ctx=context(),g=ctx.createGain();soundGain=g;g.gain.setValueAtTime(0,ctx.currentTime);g.gain.linearRampToValueAtTime(state.settings.volume/100*.5,ctx.currentTime+.4);g.connect(ctx.destination);audioNodes=[g];const track=state.settings.track;
+const tone=(freq,volume=.15,dest=g,type='sine')=>{const o=ctx.createOscillator(),a=ctx.createGain();o.type=type;o.frequency.value=freq;a.gain.value=volume;o.connect(a);a.connect(dest);o.start();audioNodes.push(o,a)};
+if(track==='brown'||track==='rain'){const length=ctx.sampleRate*5,buf=ctx.createBuffer(2,length,ctx.sampleRate);for(let c=0;c<2;c++){const data=buf.getChannelData(c);let last=0;for(let i=0;i<length;i++){const white=Math.random()*2-1;last=(last+.02*white)/1.02;data[i]=track==='brown'?last*3.5:white*.33}}const src=ctx.createBufferSource(),f=ctx.createBiquadFilter();src.buffer=buf;src.loop=true;f.type='lowpass';f.frequency.value=track==='brown'?450:2200;src.connect(f);f.connect(g);src.start();audioNodes.push(src,f)}
+else if(track==='gamma'){const merge=ctx.createChannelMerger(2);merge.connect(g);audioNodes.push(merge);[195,235].forEach((f,i)=>{const o=ctx.createOscillator(),a=ctx.createGain();o.frequency.value=f;a.gain.value=.23;o.connect(a);a.connect(merge,0,i);o.start();audioNodes.push(o,a)})}
+else if(track==='lofi'){[110,164.81,220,261.63].forEach(f=>tone(f,.11,g,'triangle'))}
+else{tone(216,.18);tone(432,.14);tone(648,.05);tone(864,.025)}
+soundPlaying=true;renderSound()
+}catch(e){toast(e.message,true)}
+}
+function renderSound(){$('#audioState').textContent=soundPlaying?'Ambiance active':'En silence';$('#soundToggle').innerHTML=icon(soundPlaying?'pause':'play');$('#soundToggle').setAttribute('aria-label',soundPlaying?"Arrêter l'ambiance":"Lire l'ambiance")}
+$('#soundToggle').onclick=()=>soundPlaying?stopSound():startSound();
+$('#soundSelect').onchange=e=>{state.settings.track=e.target.value;save();if(soundPlaying)startSound();$('#soundHelp').textContent=e.target.value==='gamma'?'Casque nécessaire pour séparer les canaux. Aucun effet sur les performances n’est garanti.':'Son généré localement. Gardez un volume confortable.'};
+$('#volume').oninput=e=>{state.settings.volume=Number(e.target.value);$('#volumeLabel').textContent=e.target.value+' %';if(soundGain&&audioCtx)soundGain.gain.setTargetAtTime(state.settings.volume/100*.5,audioCtx.currentTime,.1);save()};
+$('#linkSound').onchange=e=>{state.settings.linkToTimer=e.target.checked;save()};
+function alarm(){
+try{const ctx=context();[660,880].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),at=ctx.currentTime+i*.25;o.frequency.value=f;g.gain.setValueAtTime(0,at);g.gain.linearRampToValueAtTime(.1,at+.02);g.gain.exponentialRampToValueAtTime(.001,at+.5);o.connect(g);g.connect(ctx.destination);o.start(at);o.stop(at+.6);o.onended=()=>{o.disconnect();g.disconnect()}})}catch(e){}
+}
+function newTimer(){return {total:1200,remaining:1200,running:false,endAt:0,type:'work',label:'Exercice · concentration',blockId:null,day:null,finished:false}}
+let T=newTimer(),timerInterval=null,suggested=5;
+function fmt(sec){sec=Math.max(0,Math.ceil(sec));const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return h?`${h}:${pad(m)}:${pad(s)}`:`${pad(m)}:${pad(s)}`}
+function canReplaceTimer(){return !T.running||confirm('Remplacer la session en cours ? Le temps de ce bloc non terminé ne sera pas comptabilisé.')}
+function setTimer(seconds,label,type='work',blockId=null,day=null){pauseTimer();if(state.settings.linkToTimer)stopSound();T={total:seconds,remaining:seconds,running:false,endAt:0,type,label,blockId,day,finished:false};$('#suggestBreak').classList.add('hidden');if(type==='break'){const block=day!==null?state.programs[day].find(b=>b.id===blockId):null;showTip(block?[block.title,block.desc]:null)}renderTimer()}
+function renderTimer(){
+$('#timerDisplay').textContent=fmt(T.remaining);$('#timerMode').textContent=T.label;$('#timerProgress').style.strokeDashoffset=653.45*(1-T.remaining/T.total);$('#timerProgress').style.stroke=T.type==='break'?'var(--teal)':'var(--primary)';
+const status=T.running?(T.type==='break'?'Pause en cours':'Concentration'):T.finished?'Bloc terminé':T.remaining<T.total?'En pause':'En attente';
+$('#timerState').textContent=status;$('#timerState').style.color=T.running?'var(--primary)':'#8b95a5';$('#startTimer').innerHTML=icon(T.running?'pause':'play')+'<span>'+(T.running?'Mettre en pause':T.finished?'Recommencer':T.remaining<T.total?'Reprendre':'Démarrer')+'</span>';
+$$('.preset').forEach(b=>b.classList.toggle('active',!T.blockId&&Number(b.dataset.min)*60===T.total&&(b.dataset.break?'break':'work')===T.type));
+document.title=T.running?fmt(T.remaining)+' · '+T.label+' — MPI*':'MPI* — Votre rythme, vos progrès'
+}
+function startTimer(){
+try{context()}catch(e){}
+if(T.remaining<=0){T.remaining=T.total;T.finished=false}
+T.running=true;T.endAt=Date.now()+T.remaining*1000;clearInterval(timerInterval);timerInterval=setInterval(tick,250);
+if(T.type==='work'&&state.settings.linkToTimer&&!soundPlaying)startSound();
+if(T.type==='break'&&state.settings.linkToTimer)stopSound();
+$('#suggestBreak').classList.add('hidden');renderTimer()
+}
+function pauseTimer(){if(T?.running)T.remaining=Math.max(0,Math.ceil((T.endAt-Date.now())/1000));if(T)T.running=false;clearInterval(timerInterval);if(state.settings.linkToTimer&&soundPlaying)stopSound()}
+function tick(){if(!T.running)return;T.remaining=Math.max(0,Math.ceil((T.endAt-Date.now())/1000));if(!T.remaining)finishTimer();else renderTimer()}
+function finishTimer(){
+if(T.finished)return;T.running=false;T.finished=true;T.remaining=0;clearInterval(timerInterval);rollover();if(state.settings.linkToTimer)stopSound();alarm();
+if(T.type==='work'){
+state.focusMinutes+=T.total/60;state.sessionCount++;state.sessionsToday++;if(T.blockId&&T.day===eveningDate().getDay()&&todayPlan().some(b=>b.id===T.blockId)){const key=eveningKey();state.completed[key]=[...new Set([...(state.completed[key]||[]),T.blockId])]}
+suggested=T.total>=2400?10:5;let tip=null;
+if(T.blockId&&T.day!==null){const p=state.programs[T.day],i=p.findIndex(b=>b.id===T.blockId),next=p[i+1];if(next?.type==='break'){suggested=duration(next);tip=[next.title,next.desc]}}
+if(!tip)tipIndex=(tipIndex+1)%TIPS.length;showTip(tip);$('#suggestBreak').textContent=`Commencer la pause · ${suggested} min`;$('#suggestBreak').classList.remove('hidden');save();renderStats();renderProgram();toast(`${Math.round(T.total/60)} min de concentration enregistrées. Place à une vraie pause.`)
+}else toast('Pause terminée. Reprenez doucement, si vous vous sentez disponible.');
+renderTimer()
+}
+$('#startTimer').onclick=()=>{if(T.running){pauseTimer();renderTimer()}else startTimer()};
+$('#resetTimer').onclick=()=>{if(T.running&&!confirm('Réinitialiser ce bloc ? Son temps non terminé ne sera pas enregistré.'))return;pauseTimer();T.remaining=T.total;T.finished=false;renderTimer()};
+$$('.preset').forEach(b=>b.onclick=()=>{if(!canReplaceTimer())return;const m=Number(b.dataset.min),br=!!b.dataset.break;setTimer(m*60,br?'Pause · récupération':m===20?'Exercice · concentration':m===40?'Cours · rappel actif':'Focus · travail de fond',br?'break':'work')});
+$('#suggestBreak').onclick=()=>{setTimer(suggested*60,'Pause · récupération','break');startTimer()};
+$('#heroStart').onclick=()=>{if(!T.running)startTimer()};
+
+$$('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
+$$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()}}));
+$('#menuButton').onclick=()=>{const open=$('#nav').classList.toggle('open');$('#menuButton').setAttribute('aria-expanded',open)};
+$$('#nav a').forEach(a=>a.onclick=()=>{$('#nav').classList.remove('open');$('#menuButton').setAttribute('aria-expanded','false')});
+if('IntersectionObserver'in window){const ob=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){$$('#nav a').forEach(a=>a.classList.toggle('active',a.hash==='#'+entry.target.id))}})},{rootMargin:'-10% 0px -65% 0px'});['focus','quotas','programme','carnet'].forEach(id=>ob.observe($('#'+id)))}
+function applySettings(){$('#soundSelect').value=state.settings.track;$('#volume').value=state.settings.volume;$('#volumeLabel').textContent=state.settings.volume+' %';$('#linkSound').checked=state.settings.linkToTimer}
+function renderAll(){renderStats();renderQuotas();renderProgram();renderMemo();renderHistory()}
+$('#dateLabel').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});$('#year').textContent=new Date().getFullYear();
+rollover();localSave();applySettings();renderAll();showTip();renderTimer();
+setInterval(()=>{if(rollover()){save();renderAll()}else if(!document.hidden)renderProgram()},30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(rollover()){save();renderAll()}tick()}});
+window.addEventListener('pagehide',localSave);
+if(!storageWorking)setStatus('Stockage indisponible · téléchargez régulièrement une copie JSON.',true);
+})();
+</script>
+</body>
+</html>
